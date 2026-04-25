@@ -1,0 +1,1566 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="description" content="AngebotAI — Professionelle B2B-Angebote in 30 Sekunden. KI-gestützte Angebotserstellung für den DACH-Markt.">
+<meta name="theme-color" content="#07080C">
+<title>Angebot·AI — B2B-Angebote in 30 Sekunden</title>
+
+<!-- PWA manifest inline -->
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500;1,700&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ═══════════════════════════════════════════════════════
+   RESET & ROOT
+═══════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07080C;
+  --s1:#0D0F18;
+  --s2:#131621;
+  --s3:#191D2C;
+  --s4:#1E2235;
+  --border:#252A3D;
+  --border2:#313754;
+  --gold:#B8892C;
+  --gold2:#D4A84B;
+  --gold3:#E8C97A;
+  --gold4:#F5DFA0;
+  --goldf:rgba(184,137,44,0.13);
+  --goldf2:rgba(184,137,44,0.07);
+  --goldf3:rgba(184,137,44,0.04);
+  --cream:#EDE8DC;
+  --cream2:rgba(237,232,220,0.75);
+  --cream3:rgba(237,232,220,0.45);
+  --cream4:rgba(237,232,220,0.25);
+  --muted:#2D3047;
+  --muted2:#3E4460;
+  --muted3:#5E6485;
+  --muted4:#8890AA;
+  --red:#C0392B;
+  --green:#27AE60;
+  --r:6px;
+  --r2:10px;
+  --nav-h:66px;
+  --transition:.22s ease;
+}
+
+html{
+  background:var(--bg);
+  color:var(--cream);
+  font-family:'Instrument Sans',sans-serif;
+  font-size:15px;
+  line-height:1.6;
+  scroll-behavior:smooth;
+  -webkit-font-smoothing:antialiased;
+}
+body{min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+
+/* ═══════════════════════════════════════════════════════
+   SCROLLBAR
+═══════════════════════════════════════════════════════ */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--gold)}
+
+/* ═══════════════════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════════════════ */
+nav{
+  height:var(--nav-h);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 48px;
+  border-bottom:1px solid var(--border);
+  background:rgba(7,8,12,0.96);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  transition:border-color var(--transition);
+}
+.logo{
+  font-family:'Playfair Display',serif;
+  font-size:21px;font-weight:700;letter-spacing:0.02em;
+  color:var(--cream);text-decoration:none;
+  display:flex;align-items:center;gap:2px;
+  cursor:pointer;
+}
+.logo-accent{color:var(--gold2)}
+.logo-sub{
+  font-family:'Instrument Sans',sans-serif;
+  font-size:10px;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--muted4);margin-left:10px;margin-top:2px;
+  border-left:1px solid var(--border2);padding-left:10px;
+}
+.nav-right{display:flex;align-items:center;gap:8px}
+.nav-btn{
+  padding:8px 18px;
+  font-family:'Instrument Sans',sans-serif;
+  font-size:13px;font-weight:500;letter-spacing:0.04em;
+  border:1px solid var(--border2);border-radius:var(--r);
+  background:transparent;color:var(--cream2);
+  cursor:pointer;transition:all var(--transition);text-decoration:none;
+  display:inline-flex;align-items:center;
+}
+.nav-btn:hover{border-color:var(--gold);color:var(--gold2)}
+.nav-btn.primary{
+  background:var(--gold);border-color:var(--gold);
+  color:#07080C;font-weight:600;
+}
+.nav-btn.primary:hover{background:var(--gold2);border-color:var(--gold2)}
+
+/* ═══════════════════════════════════════════════════════
+   VIEWS SYSTEM
+═══════════════════════════════════════════════════════ */
+.view{display:none;flex-direction:column;flex:1;padding-top:var(--nav-h);min-height:100vh}
+.view.active{display:flex}
+
+/* ═══════════════════════════════════════════════════════
+   HOME HERO
+═══════════════════════════════════════════════════════ */
+#view-home{
+  align-items:center;justify-content:flex-start;
+  padding-top:var(--nav-h);
+  overflow:hidden;
+}
+.hero-bg{
+  position:fixed;top:0;left:0;right:0;bottom:0;
+  pointer-events:none;z-index:0;
+}
+.hero-glow-1{
+  position:absolute;top:-100px;left:50%;transform:translateX(-50%);
+  width:900px;height:700px;
+  background:radial-gradient(ellipse at center,rgba(184,137,44,0.07) 0%,transparent 65%);
+}
+.hero-glow-2{
+  position:absolute;top:30%;left:10%;
+  width:400px;height:400px;
+  background:radial-gradient(ellipse,rgba(184,137,44,0.03) 0%,transparent 70%);
+}
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(var(--border) 1px,transparent 1px),
+    linear-gradient(90deg,var(--border) 1px,transparent 1px);
+  background-size:60px 60px;
+  opacity:0.25;
+  mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,black 0%,transparent 100%);
+}
+.hero-inner{
+  position:relative;z-index:1;
+  width:100%;max-width:1100px;margin:0 auto;
+  padding:90px 48px 100px;
+  text-align:center;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:12px;
+  font-size:11px;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:32px;
+  animation:fadeUp .7s ease both;
+}
+.hero-eyebrow::before,.hero-eyebrow::after{
+  content:'';display:block;height:1px;width:44px;
+  background:linear-gradient(90deg,transparent,var(--gold));
+  opacity:0.5;
+}
+.hero-eyebrow::after{background:linear-gradient(90deg,var(--gold),transparent)}
+
+h1.hero-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(52px,8vw,96px);
+  font-weight:700;line-height:1.03;letter-spacing:-0.02em;
+  color:var(--cream);max-width:900px;margin:0 auto 24px;
+  animation:fadeUp .8s .1s ease both;
+}
+h1.hero-title em{
+  font-style:italic;color:var(--gold2);
+  background:linear-gradient(135deg,var(--gold2),var(--gold3));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-sub{
+  font-size:18px;color:var(--cream2);max-width:560px;
+  line-height:1.75;margin:0 auto 56px;font-weight:300;
+  animation:fadeUp .8s .2s ease both;
+}
+.hero-actions{
+  display:flex;flex-direction:column;align-items:center;gap:14px;
+  animation:fadeUp .8s .3s ease both;
+}
+.badge-free{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--goldf);border:1px solid rgba(184,137,44,0.4);
+  color:var(--gold3);font-size:11px;letter-spacing:0.13em;
+  text-transform:uppercase;padding:9px 20px;border-radius:2px;
+}
+.badge-free::before{content:'✦';font-size:9px;opacity:0.8}
+.hero-cta{
+  background:var(--gold);color:#07080C;
+  border:none;cursor:pointer;
+  font-family:'Instrument Sans',sans-serif;
+  font-size:15px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;
+  padding:20px 56px;border-radius:var(--r);
+  transition:all var(--transition);
+  display:inline-flex;align-items:center;gap:10px;
+  position:relative;overflow:hidden;
+}
+.hero-cta::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.1),transparent);
+}
+.hero-cta:hover{background:var(--gold2);transform:translateY(-3px);box-shadow:0 20px 60px rgba(184,137,44,0.25)}
+.hero-cta:active{transform:translateY(-1px)}
+
+.hero-stats{
+  display:flex;justify-content:center;gap:64px;
+  margin-top:80px;padding-top:56px;
+  border-top:1px solid var(--border);
+  animation:fadeUp .8s .5s ease both;
+}
+.stat-item{text-align:center}
+.stat-n{
+  font-family:'Playfair Display',serif;
+  font-size:38px;font-weight:700;
+  background:linear-gradient(135deg,var(--gold2),var(--gold3));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  line-height:1;
+}
+.stat-l{font-size:12px;color:var(--muted4);margin-top:6px;letter-spacing:0.07em}
+
+/* ── FEATURES STRIP ── */
+.features-strip{
+  width:100%;background:var(--s1);border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  padding:56px 48px;position:relative;z-index:1;
+}
+.features-inner{max-width:1100px;margin:0 auto}
+.features-label{
+  text-align:center;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:48px;
+}
+.features-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:28px;
+}
+.feat-card{
+  background:var(--s2);border:1px solid var(--border);border-radius:var(--r2);
+  padding:32px 28px;transition:all var(--transition);
+}
+.feat-card:hover{border-color:var(--border2);transform:translateY(-3px);background:var(--s3)}
+.feat-icon{
+  width:44px;height:44px;background:var(--goldf);border:1px solid rgba(184,137,44,0.25);
+  border-radius:var(--r);display:flex;align-items:center;justify-content:center;
+  font-size:20px;margin-bottom:20px;
+}
+.feat-title{font-size:15px;font-weight:600;color:var(--cream);margin-bottom:8px}
+.feat-desc{font-size:14px;color:var(--muted4);line-height:1.7}
+
+/* ── TRUST / LOGOS ── */
+.trust-strip{
+  width:100%;padding:48px;position:relative;z-index:1;text-align:center;
+}
+.trust-label{font-size:11px;color:var(--muted4);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:20px}
+.trust-pills{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.trust-pill{
+  font-size:12px;color:var(--muted4);
+  border:1px solid var(--border2);padding:6px 14px;border-radius:20px;
+  letter-spacing:0.05em;transition:all var(--transition);
+}
+.trust-pill:hover{border-color:var(--gold);color:var(--gold3)}
+
+/* ═══════════════════════════════════════════════════════
+   FORM VIEW
+═══════════════════════════════════════════════════════ */
+#view-form{align-items:stretch}
+.form-layout{
+  display:grid;grid-template-columns:1fr 340px;
+  max-width:1100px;width:100%;margin:0 auto;
+  padding:60px 48px 100px;gap:48px;
+}
+.form-main{}
+.form-sidebar{
+  position:sticky;top:calc(var(--nav-h) + 24px);
+  height:fit-content;
+}
+.back-link{
+  display:inline-flex;align-items:center;gap:6px;
+  color:var(--muted4);font-size:13px;cursor:pointer;
+  margin-bottom:36px;transition:color var(--transition);
+  background:none;border:none;font-family:'Instrument Sans',sans-serif;
+}
+.back-link:hover{color:var(--cream)}
+.back-link::before{content:'←';font-size:15px}
+.form-head{margin-bottom:48px}
+.form-head h2{
+  font-family:'Playfair Display',serif;
+  font-size:42px;font-weight:700;color:var(--cream);margin-bottom:8px;
+}
+.form-head p{color:var(--muted4);font-size:14px}
+.form-head .free-badge-sm{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--goldf);border:1px solid rgba(184,137,44,0.35);
+  color:var(--gold3);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;
+  padding:6px 14px;border-radius:2px;margin-top:12px;
+}
+.section-label{
+  font-size:10px;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:16px;
+  display:flex;align-items:center;gap:10px;
+}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border2)}
+.fsec{margin-bottom:40px}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fgrid.full{grid-template-columns:1fr}
+.field{display:flex;flex-direction:column;gap:7px}
+.field label{
+  font-size:11px;letter-spacing:0.09em;text-transform:uppercase;
+  color:var(--muted3);font-weight:500;
+}
+.field input,.field textarea{
+  background:var(--s2);border:1px solid var(--border2);
+  color:var(--cream);font-family:'Instrument Sans',sans-serif;
+  font-size:14px;padding:13px 17px;outline:none;
+  border-radius:var(--r);width:100%;
+  transition:border-color var(--transition),background var(--transition),box-shadow var(--transition);
+}
+.field input:hover,.field textarea:hover{border-color:var(--muted3)}
+.field input:focus,.field textarea:focus{
+  border-color:var(--gold);background:var(--goldf3);
+  box-shadow:0 0 0 3px rgba(184,137,44,0.1);
+}
+.field input::placeholder,.field textarea::placeholder{color:var(--muted2);font-style:italic}
+.field textarea{resize:vertical;min-height:100px;line-height:1.65}
+.char-hint{font-size:11px;color:var(--muted3);text-align:right;margin-top:4px}
+
+.toggle-row{display:flex;gap:8px}
+.tog{
+  flex:1;padding:12px 16px;
+  border:1px solid var(--border2);background:var(--s2);
+  color:var(--muted3);font-family:'Instrument Sans',sans-serif;
+  font-size:13px;font-weight:500;cursor:pointer;
+  border-radius:var(--r);transition:all var(--transition);
+  letter-spacing:0.04em;display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.tog:hover{border-color:var(--muted3);color:var(--cream2)}
+.tog.on{border-color:var(--gold);color:var(--gold2);background:var(--goldf)}
+
+.gen-btn{
+  width:100%;padding:20px;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  color:#07080C;border:none;cursor:pointer;
+  font-family:'Instrument Sans',sans-serif;
+  font-size:15px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;
+  border-radius:var(--r);margin-top:8px;
+  transition:all var(--transition);
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  position:relative;overflow:hidden;
+}
+.gen-btn::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.1),transparent);
+}
+.gen-btn:hover:not(:disabled){
+  background:linear-gradient(135deg,var(--gold2),var(--gold3));
+  transform:translateY(-2px);box-shadow:0 12px 40px rgba(184,137,44,0.3);
+}
+.gen-btn:active:not(:disabled){transform:translateY(0)}
+.gen-btn:disabled{opacity:0.35;cursor:not-allowed;transform:none;box-shadow:none}
+.err-msg{
+  color:#E57373;font-size:13px;
+  background:rgba(192,57,43,0.1);border:1px solid rgba(192,57,43,0.25);
+  padding:13px 17px;margin-top:14px;border-radius:var(--r);
+  display:none;
+}
+.err-msg.show{display:block}
+
+/* ── SIDEBAR ── */
+.sidebar-card{
+  background:var(--s1);border:1px solid var(--border);
+  border-radius:var(--r2);padding:28px 24px;margin-bottom:16px;
+}
+.sidebar-card-title{
+  font-size:11px;letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:18px;
+  display:flex;align-items:center;gap:8px;
+}
+.sidebar-card-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.tip-list{display:flex;flex-direction:column;gap:14px}
+.tip-item{display:flex;gap:12px;align-items:flex-start}
+.tip-num{
+  width:22px;height:22px;border-radius:50%;
+  background:var(--goldf);border:1px solid rgba(184,137,44,0.3);
+  color:var(--gold2);font-size:11px;font-weight:600;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;
+}
+.tip-text{font-size:13px;color:var(--muted4);line-height:1.6}
+.tip-text strong{color:var(--cream2);font-weight:500}
+.preview-section{margin-top:16px}
+.preview-label{font-size:11px;color:var(--muted4);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px}
+.preview-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;background:var(--s2);border-radius:var(--r);
+  margin-bottom:8px;border:1px solid var(--border);
+}
+.preview-item-icon{color:var(--gold);font-size:13px}
+.preview-item-text{font-size:13px;color:var(--cream2)}
+.counter-badge{
+  display:flex;align-items:center;gap:8px;
+  background:var(--goldf);border:1px solid rgba(184,137,44,0.3);
+  border-radius:var(--r);padding:12px 16px;
+}
+.counter-num{
+  font-family:'Playfair Display',serif;
+  font-size:24px;font-weight:700;color:var(--gold2);line-height:1;
+}
+.counter-text{font-size:12px;color:var(--muted4);line-height:1.4}
+.counter-text strong{color:var(--gold3);font-weight:500;display:block}
+
+/* ═══════════════════════════════════════════════════════
+   LOADING VIEW
+═══════════════════════════════════════════════════════ */
+#view-loading{
+  align-items:center;justify-content:center;
+  min-height:calc(100vh - var(--nav-h));
+  gap:32px;padding:40px;
+}
+.ld-orb{
+  width:72px;height:72px;border-radius:50%;
+  background:var(--goldf);border:2px solid rgba(184,137,44,0.3);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;animation:orbPulse 2s ease-in-out infinite;
+}
+.ld-orb::before{
+  content:'';position:absolute;inset:-8px;border-radius:50%;
+  border:1px solid rgba(184,137,44,0.15);animation:orbRing 2s ease-in-out infinite;
+}
+@keyframes orbPulse{
+  0%,100%{transform:scale(1);background:rgba(184,137,44,0.1)}
+  50%{transform:scale(1.05);background:rgba(184,137,44,0.18)}
+}
+@keyframes orbRing{
+  0%,100%{opacity:0.5;transform:scale(1)}
+  50%{opacity:1;transform:scale(1.1)}
+}
+.ld-orb-inner{font-size:28px;z-index:1}
+.ld-title{
+  font-family:'Playfair Display',serif;
+  font-size:32px;font-weight:500;color:var(--cream2);text-align:center;
+}
+.ld-steps{
+  display:flex;flex-direction:column;gap:12px;max-width:400px;width:100%;
+}
+.ld-step{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 18px;background:var(--s1);border:1px solid var(--border);
+  border-radius:var(--r);transition:all var(--transition);
+}
+.ld-step.active{border-color:rgba(184,137,44,0.4);background:var(--goldf3)}
+.ld-step.done{border-color:rgba(39,174,96,0.3);background:rgba(39,174,96,0.05)}
+.ld-step-icon{font-size:16px;flex-shrink:0;width:24px;text-align:center}
+.ld-step-text{font-size:13px;color:var(--muted4)}
+.ld-step.active .ld-step-text{color:var(--cream2)}
+.ld-step.done .ld-step-text{color:rgba(39,174,96,0.8)}
+.ld-dots{display:flex;gap:6px;margin-top:4px}
+.ld-dots span{
+  width:8px;height:8px;border-radius:50%;background:var(--gold);
+  animation:ldPulse 1.5s ease-in-out infinite;
+}
+.ld-dots span:nth-child(2){animation-delay:.25s}
+.ld-dots span:nth-child(3){animation-delay:.5s}
+@keyframes ldPulse{
+  0%,80%,100%{transform:scale(0.45);opacity:0.3}
+  40%{transform:scale(1);opacity:1}
+}
+
+/* ═══════════════════════════════════════════════════════
+   RESULT VIEW
+═══════════════════════════════════════════════════════ */
+#view-result{align-items:stretch}
+.result-layout{
+  max-width:1100px;width:100%;margin:0 auto;
+  padding:48px 48px 100px;
+  display:grid;grid-template-columns:1fr 300px;gap:40px;
+  align-items:start;
+}
+.res-topbar{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:36px;flex-wrap:wrap;gap:12px;
+  grid-column:1/-1;
+}
+.res-title{
+  font-family:'Playfair Display',serif;
+  font-size:24px;font-weight:500;color:var(--cream);
+  display:flex;align-items:center;gap:10px;
+}
+.res-title-accent{color:var(--gold2)}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap}
+.btn-g{
+  padding:10px 20px;border:1px solid var(--border2);background:transparent;
+  color:var(--cream2);font-family:'Instrument Sans',sans-serif;
+  font-size:13px;cursor:pointer;border-radius:var(--r);
+  transition:all var(--transition);letter-spacing:0.03em;
+  display:inline-flex;align-items:center;gap:7px;
+}
+.btn-g:hover{border-color:var(--gold);color:var(--gold2)}
+.btn-g svg{width:14px;height:14px;flex-shrink:0}
+.btn-p{
+  padding:10px 20px;background:var(--gold);border:none;
+  color:#07080C;font-family:'Instrument Sans',sans-serif;
+  font-size:13px;font-weight:600;cursor:pointer;border-radius:var(--r);
+  transition:all var(--transition);display:inline-flex;align-items:center;gap:7px;
+}
+.btn-p:hover{background:var(--gold2);transform:translateY(-1px)}
+
+/* ── PROPOSAL DOCUMENT ── */
+.proposal-doc{
+  background:var(--s1);
+  border:1px solid var(--border2);
+  padding:60px 64px;
+  position:relative;
+  border-radius:var(--r);
+  line-height:1.75;
+  animation:fadeUp .5s ease both;
+}
+.proposal-doc::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--gold) 0%,var(--gold2) 30%,var(--gold3) 60%,var(--gold) 100%);
+  border-radius:var(--r) var(--r) 0 0;
+}
+.doc-header{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  margin-bottom:48px;padding-bottom:40px;
+  border-bottom:1px solid var(--border);
+  gap:24px;
+}
+.doc-party{font-size:13px;color:var(--muted4);line-height:2}
+.doc-party strong{color:var(--cream2);font-weight:500;display:block;font-size:14px}
+.doc-party.right{text-align:right}
+.doc-date{
+  font-size:11px;color:var(--muted3);letter-spacing:0.07em;
+  margin-top:4px;
+}
+.doc-betreff{
+  font-family:'Playfair Display',serif;
+  font-size:28px;font-weight:700;color:var(--cream);
+  margin-bottom:32px;line-height:1.3;
+}
+.doc-anrede{
+  font-size:15px;color:var(--cream2);margin-bottom:36px;
+}
+.doc-section{margin-bottom:36px}
+.doc-section-title{
+  font-size:10px;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:12px;
+  display:flex;align-items:center;gap:10px;
+}
+.doc-section-title::after{content:'';height:1px;width:40px;background:var(--gold);opacity:0.3}
+.doc-section p{font-size:15px;color:var(--cream2);line-height:1.85}
+.doc-list{list-style:none;display:flex;flex-direction:column;gap:9px}
+.doc-list li{
+  font-size:14px;color:var(--cream2);
+  display:flex;gap:14px;align-items:flex-start;
+  padding:13px 18px;background:var(--s2);
+  border-left:2px solid var(--gold);border-radius:0 var(--r) var(--r) 0;
+  transition:background var(--transition);
+}
+.doc-list li:hover{background:var(--s3)}
+.doc-list li::before{content:'→';color:var(--gold);flex-shrink:0;margin-top:1px}
+.doc-closing{
+  margin-top:44px;padding-top:32px;
+  border-top:1px solid var(--border);
+  font-size:15px;color:var(--cream2);line-height:2.1;
+}
+.doc-closing strong{color:var(--cream);font-weight:600}
+.doc-watermark{
+  text-align:center;margin-top:40px;padding-top:24px;
+  font-size:11px;color:var(--muted2);letter-spacing:0.09em;
+}
+.doc-watermark strong{color:var(--gold);opacity:0.55;font-weight:500}
+
+/* ── RESULT SIDEBAR ── */
+.res-sidebar{display:flex;flex-direction:column;gap:16px}
+.res-side-card{
+  background:var(--s1);border:1px solid var(--border);
+  border-radius:var(--r2);padding:24px 20px;
+}
+.res-side-title{
+  font-size:10px;letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--muted4);margin-bottom:16px;
+}
+.score-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.score-item{
+  background:var(--s2);border-radius:var(--r);
+  padding:14px 12px;text-align:center;
+}
+.score-num{
+  font-family:'Playfair Display',serif;
+  font-size:22px;font-weight:700;color:var(--gold2);line-height:1;
+}
+.score-lbl{font-size:11px;color:var(--muted4);margin-top:4px}
+.next-steps-list{display:flex;flex-direction:column;gap:10px}
+.next-step-item{
+  display:flex;gap:10px;align-items:flex-start;
+  font-size:13px;color:var(--muted4);line-height:1.5;
+}
+.next-step-num{
+  width:20px;height:20px;border-radius:50%;
+  background:var(--goldf);border:1px solid rgba(184,137,44,0.25);
+  color:var(--gold2);font-size:10px;font-weight:600;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;margin-top:1px;
+}
+.usage-bar-wrap{margin-top:8px}
+.usage-bar-label{display:flex;justify-content:space-between;font-size:12px;color:var(--muted4);margin-bottom:8px}
+.usage-bar-label strong{color:var(--cream2)}
+.usage-bar-track{height:4px;background:var(--border2);border-radius:2px}
+.usage-bar-fill{height:4px;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:2px;transition:width .5s ease}
+.upgrade-card{
+  background:linear-gradient(135deg,var(--goldf),var(--goldf2));
+  border:1px solid rgba(184,137,44,0.3);
+  border-radius:var(--r2);padding:24px 20px;text-align:center;
+}
+.upgrade-icon{font-size:24px;margin-bottom:12px}
+.upgrade-title{font-size:14px;font-weight:600;color:var(--cream);margin-bottom:6px}
+.upgrade-desc{font-size:12px;color:var(--muted4);line-height:1.6;margin-bottom:16px}
+.upgrade-btn{
+  width:100%;padding:12px;background:var(--gold);color:#07080C;
+  border:none;cursor:pointer;font-family:'Instrument Sans',sans-serif;
+  font-size:13px;font-weight:600;border-radius:var(--r);
+  transition:all var(--transition);letter-spacing:0.06em;
+}
+.upgrade-btn:hover{background:var(--gold2)}
+.plan-rows{display:flex;flex-direction:column;gap:8px}
+.plan-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 12px;background:var(--s2);border-radius:var(--r);
+  border:1px solid var(--border);transition:all var(--transition);cursor:pointer;
+}
+.plan-row:hover{border-color:var(--gold);background:var(--goldf3)}
+.plan-row-name{font-size:13px;color:var(--cream2)}
+.plan-row-desc{font-size:11px;color:var(--muted4)}
+.plan-row-price{
+  font-family:'Playfair Display',serif;
+  font-size:18px;font-weight:700;color:var(--gold2);
+}
+.plan-row-price small{font-family:'Instrument Sans',sans-serif;font-size:10px;color:var(--muted4)}
+
+/* ═══════════════════════════════════════════════════════
+   PAYWALL MODAL
+═══════════════════════════════════════════════════════ */
+.modal-overlay{
+  position:fixed;inset:0;
+  background:rgba(7,8,12,0.92);backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  display:none;align-items:center;justify-content:center;
+  z-index:2000;padding:24px;
+}
+.modal-overlay.show{display:flex}
+.modal-card{
+  background:var(--s1);border:1px solid var(--border2);
+  max-width:520px;width:100%;
+  border-radius:var(--r2);
+  padding:52px 44px;position:relative;text-align:center;
+  animation:modalIn .3s ease both;
+}
+.modal-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent 0%,var(--gold) 50%,transparent 100%);
+  border-radius:var(--r2) var(--r2) 0 0;
+}
+@keyframes modalIn{
+  from{opacity:0;transform:translateY(20px) scale(0.97)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+.modal-close{
+  position:absolute;top:20px;right:20px;
+  width:32px;height:32px;border-radius:50%;
+  background:var(--s2);border:1px solid var(--border2);
+  color:var(--muted4);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;transition:all var(--transition);
+}
+.modal-close:hover{border-color:var(--border2);color:var(--cream);background:var(--s3)}
+.modal-icon{font-size:36px;margin-bottom:20px;display:block}
+.modal-title{
+  font-family:'Playfair Display',serif;
+  font-size:34px;font-weight:700;color:var(--cream);margin-bottom:12px;
+}
+.modal-sub{font-size:14px;color:var(--muted4);line-height:1.75;margin-bottom:36px}
+.plan-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.plan-card{
+  border:1px solid var(--border2);padding:20px 18px;
+  border-radius:var(--r);cursor:pointer;
+  transition:all var(--transition);position:relative;
+  text-align:left;background:var(--s2);
+}
+.plan-card:hover,.plan-card.popular{border-color:var(--gold);background:var(--goldf)}
+.plan-card.popular::after{
+  content:'BELIEBT';position:absolute;top:-1px;right:12px;
+  font-size:8px;letter-spacing:0.15em;color:#07080C;
+  background:var(--gold);padding:3px 8px;border-radius:0 0 4px 4px;
+  font-weight:600;
+}
+.plan-card-name{font-size:13px;font-weight:600;color:var(--cream);margin-bottom:3px}
+.plan-card-desc{font-size:11px;color:var(--muted4);line-height:1.5;margin-bottom:12px}
+.plan-card-price{
+  font-family:'Playfair Display',serif;
+  font-size:28px;font-weight:700;color:var(--gold2);line-height:1;
+}
+.plan-card-price small{
+  font-family:'Instrument Sans',sans-serif;
+  font-size:12px;color:var(--muted4);
+}
+.plan-card-full{
+  border:1px solid var(--border2);padding:16px 18px;
+  border-radius:var(--r);cursor:pointer;
+  transition:all var(--transition);
+  background:var(--s2);margin-bottom:10px;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.plan-card-full:hover{border-color:var(--gold);background:var(--goldf)}
+.plan-card-full .plan-card-price{font-size:22px}
+.modal-cta{
+  width:100%;padding:17px;background:linear-gradient(135deg,var(--gold),var(--gold2));
+  color:#07080C;border:none;cursor:pointer;
+  font-family:'Instrument Sans',sans-serif;
+  font-size:14px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;
+  border-radius:var(--r);margin-bottom:14px;
+  transition:all var(--transition);
+}
+.modal-cta:hover{background:linear-gradient(135deg,var(--gold2),var(--gold3));transform:translateY(-1px)}
+.modal-dismiss{
+  font-size:12px;color:var(--muted3);cursor:pointer;
+  background:none;border:none;letter-spacing:0.06em;
+  transition:color var(--transition);font-family:'Instrument Sans',sans-serif;
+}
+.modal-dismiss:hover{color:var(--muted4)}
+.modal-secure{
+  margin-top:18px;font-size:11px;color:var(--muted2);
+  display:flex;align-items:center;justify-content:center;gap:6px;
+}
+
+/* ═══════════════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════════════ */
+footer{
+  background:var(--s1);border-top:1px solid var(--border);
+  padding:40px 48px;margin-top:auto;
+}
+.footer-inner{
+  max-width:1100px;margin:0 auto;
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:16px;
+}
+.footer-logo{
+  font-family:'Playfair Display',serif;
+  font-size:18px;font-weight:700;color:var(--cream2);
+}
+.footer-logo span{color:var(--gold2)}
+.footer-links{display:flex;gap:24px;flex-wrap:wrap}
+.footer-link{font-size:13px;color:var(--muted4);text-decoration:none;cursor:pointer;transition:color var(--transition)}
+.footer-link:hover{color:var(--cream2)}
+.footer-copy{font-size:12px;color:var(--muted3)}
+
+/* ═══════════════════════════════════════════════════════
+   ANIMATIONS
+═══════════════════════════════════════════════════════ */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(24px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes fadeIn{
+  from{opacity:0}
+  to{opacity:1}
+}
+
+/* ═══════════════════════════════════════════════════════
+   PRINT STYLES
+═══════════════════════════════════════════════════════ */
+@media print{
+  nav,.res-topbar,.res-sidebar,.doc-watermark,footer,
+  .btn-row,.upgrade-card,.modal-overlay{display:none!important}
+  body,html{background:white!important;color:black!important}
+  #view-result{padding-top:0!important}
+  .result-layout{grid-template-columns:1fr!important;padding:0!important}
+  .proposal-doc{
+    border:none!important;padding:0!important;
+    background:white!important;box-shadow:none!important;
+  }
+  .proposal-doc::before{display:none}
+  .doc-section p,.doc-list li,.doc-closing,.doc-anrede,.doc-party{color:#222!important}
+  .doc-betreff{color:#111!important}
+  .doc-section-title{color:#7A5C1A!important}
+  .doc-list li{background:#f7f7f5!important;border-left-color:#7A5C1A!important}
+  .doc-list li::before{color:#7A5C1A!important}
+  .doc-closing{border-top-color:#ddd!important}
+  .doc-header{border-bottom-color:#ddd!important}
+}
+
+/* ═══════════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════════════ */
+@media(max-width:900px){
+  nav{padding:0 24px}
+  .logo-sub{display:none}
+  .hero-inner{padding:60px 24px 80px}
+  .hero-stats{gap:32px}
+  .features-grid{grid-template-columns:1fr}
+  .features-strip{padding:40px 24px}
+  .form-layout{grid-template-columns:1fr;padding:40px 24px 80px;gap:32px}
+  .form-sidebar{position:static}
+  .result-layout{grid-template-columns:1fr;padding:32px 24px 80px}
+  .res-sidebar{display:none}
+  .proposal-doc{padding:36px 28px}
+  .doc-header{flex-direction:column;gap:16px}
+  .fgrid{grid-template-columns:1fr}
+  .plan-cards{grid-template-columns:1fr}
+  .modal-card{padding:40px 28px}
+  footer{padding:32px 24px}
+  .footer-inner{flex-direction:column;align-items:flex-start;gap:20px}
+}
+@media(max-width:480px){
+  h1.hero-title{font-size:42px}
+  .hero-sub{font-size:15px}
+  .hero-cta{padding:16px 36px;font-size:13px}
+  .hero-stats{gap:20px}
+  .stat-n{font-size:28px}
+  .form-head h2{font-size:32px}
+  .doc-betreff{font-size:22px}
+  .btn-row{width:100%;justify-content:stretch}
+  .btn-g,.btn-p{flex:1;justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     NAVIGATION
+══════════════════════════════════════ -->
+<nav id="main-nav">
+  <div class="logo" onclick="showView('home')">
+    Angebot<span class="logo-accent">·</span>AI
+    <span class="logo-sub">DACH B2B</span>
+  </div>
+  <div class="nav-right">
+    <button class="nav-btn" onclick="showView('home')" id="nav-home-btn" style="display:none">← Home</button>
+    <button class="nav-btn primary" onclick="startNew()" id="nav-new-btn" style="display:none">+ Neues Angebot</button>
+    <button class="nav-btn primary" onclick="showView('form')" id="nav-start-btn">Kostenlos starten</button>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════
+     VIEW: HOME
+══════════════════════════════════════ -->
+<div id="view-home" class="view active">
+
+  <div class="hero-bg">
+    <div class="hero-grid"></div>
+    <div class="hero-glow-1"></div>
+    <div class="hero-glow-2"></div>
+  </div>
+
+  <div class="hero-inner">
+    <div class="hero-eyebrow">KI-gestützte Angebotserstellung für den DACH-Markt</div>
+    <h1 class="hero-title">
+      Professionelle Angebote.<br><em>In 30 Sekunden.</em>
+    </h1>
+    <p class="hero-sub">
+      Kein Zeitverlust mehr mit Angebotserstellung. AngebotAI generiert maßgeschneiderte, 
+      erstklassige B2B-Angebote — auf Knopfdruck.
+    </p>
+    <div class="hero-actions">
+      <div class="badge-free">1 kostenloses Angebot · kein Account nötig</div>
+      <button class="hero-cta" onclick="showView('form')">
+        Jetzt kostenlos testen <span>→</span>
+      </button>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item"><div class="stat-n">30s</div><div class="stat-l">Generierungszeit</div></div>
+      <div class="stat-item"><div class="stat-n">DE/EN</div><div class="stat-l">Zweisprachig</div></div>
+      <div class="stat-item"><div class="stat-n">100%</div><div class="stat-l">Individualisiert</div></div>
+      <div class="stat-item"><div class="stat-n">PDF</div><div class="stat-l">Sofort druckbar</div></div>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <div class="features-strip">
+    <div class="features-inner">
+      <div class="features-label">Was AngebotAI für dich macht</div>
+      <div class="features-grid">
+        <div class="feat-card">
+          <div class="feat-icon">⚡</div>
+          <div class="feat-title">Blitzschnell generiert</div>
+          <div class="feat-desc">Gib deinen Kontext ein — innerhalb von 30 Sekunden hast du ein vollständiges, professionelles Angebot bereit zum Versenden.</div>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon">🎯</div>
+          <div class="feat-title">DACH-optimiert</div>
+          <div class="feat-desc">Perfekt kalibriert auf den deutschsprachigen Markt. Premium-Ton, klare Struktur, Du/Sie-Toggle, komplett in Deutsch oder Englisch.</div>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon">📄</div>
+          <div class="feat-title">Sofort versendbar</div>
+          <div class="feat-desc">Kopiere das Angebot in die Zwischenablage, drucke es als PDF aus oder sende es direkt — kein Nachbearbeiten nötig.</div>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon">🔒</div>
+          <div class="feat-title">Sicher & privat</div>
+          <div class="feat-desc">Deine Kundendaten verlassen nie deinen Browser unverschlüsselt. Keine Datenspeicherung, kein Account erforderlich.</div>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon">✦</div>
+          <div class="feat-title">Vollständige Struktur</div>
+          <div class="feat-desc">Ausgangslage, Lösung, Leistungsumfang, Investition, nächste Schritte — alles da, nichts vergessen, alles auf den Punkt.</div>
+        </div>
+        <div class="feat-card">
+          <div class="feat-icon">🚀</div>
+          <div class="feat-title">Powered by Claude</div>
+          <div class="feat-desc">Gebaut auf dem leistungsfähigsten KI-Modell der Welt. Formulierungen auf Agentur-Niveau, für jede Branche und jeden Kunden.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trust -->
+  <div class="trust-strip">
+    <div class="trust-label">Ideal für</div>
+    <div class="trust-pills">
+      <div class="trust-pill">Freelancer &amp; Soloselbstständige</div>
+      <div class="trust-pill">Agenturen &amp; Beratungen</div>
+      <div class="trust-pill">Start-ups im B2B</div>
+      <div class="trust-pill">KMU in der DACH-Region</div>
+      <div class="trust-pill">Vertrieb &amp; Business Development</div>
+      <div class="trust-pill">IT &amp; Software-Dienstleister</div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <div class="footer-logo">Angebot<span>·AI</span></div>
+        <div class="footer-copy" style="margin-top:6px">© 2025 AngebotAI · Powered by Claude Sonnet</div>
+      </div>
+      <div class="footer-links">
+        <span class="footer-link">Impressum</span>
+        <span class="footer-link">Datenschutz</span>
+        <span class="footer-link">AGB</span>
+        <span class="footer-link">Kontakt</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<!-- ══════════════════════════════════════
+     VIEW: FORM
+══════════════════════════════════════ -->
+<div id="view-form" class="view">
+  <div class="form-layout">
+
+    <!-- Main form column -->
+    <div class="form-main">
+      <button class="back-link" onclick="showView('home')">Zurück zur Startseite</button>
+      <div class="form-head">
+        <h2>Angebot erstellen</h2>
+        <p>Fülle die Felder aus — dauert unter 2 Minuten</p>
+        <div class="free-badge-sm" id="free-badge-sm">✦ 1 kostenloses Angebot verfügbar</div>
+      </div>
+
+      <!-- Einstellungen -->
+      <div class="fsec">
+        <div class="section-label">Einstellungen</div>
+        <div class="fgrid">
+          <div class="field">
+            <label>Sprache des Angebots</label>
+            <div class="toggle-row">
+              <button class="tog on" id="tog-de" onclick="setLang('de')">🇩🇪 Deutsch</button>
+              <button class="tog" id="tog-en" onclick="setLang('en')">🇬🇧 English</button>
+            </div>
+          </div>
+          <div class="field">
+            <label>Anrede (Kunde)</label>
+            <div class="toggle-row">
+              <button class="tog on" id="tog-sie" onclick="setAnrede('Sie')">Formell (Sie)</button>
+              <button class="tog" id="tog-du" onclick="setAnrede('Du')">Locker (Du)</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dein Unternehmen -->
+      <div class="fsec">
+        <div class="section-label">Dein Unternehmen</div>
+        <div class="fgrid">
+          <div class="field">
+            <label>Firmenname *</label>
+            <input id="f-firma" type="text" placeholder="z.B. Curated Gifts Vienna" oninput="checkValid()" autocomplete="organization">
+          </div>
+          <div class="field">
+            <label>Deine Leistung / Produkt *</label>
+            <input id="f-leistung" type="text" placeholder="z.B. Premium B2B Geschenkboxen" oninput="checkValid()">
+          </div>
+        </div>
+      </div>
+
+      <!-- Dein Kunde -->
+      <div class="fsec">
+        <div class="section-label">Dein Kunde</div>
+        <div class="fgrid">
+          <div class="field">
+            <label>Ansprechpartner (optional)</label>
+            <input id="f-kname" type="text" placeholder="z.B. Mag. Victoria Movshenzon" autocomplete="name">
+          </div>
+          <div class="field">
+            <label>Kundenunternehmen *</label>
+            <input id="f-kfirma" type="text" placeholder="z.B. The Amauris Vienna" oninput="checkValid()" autocomplete="organization">
+          </div>
+        </div>
+      </div>
+
+      <!-- Deal-Kontext -->
+      <div class="fsec">
+        <div class="section-label">Deal-Kontext</div>
+        <div class="fgrid full">
+          <div class="field">
+            <label>Situation &amp; Ziel *</label>
+            <textarea id="f-kontext" placeholder="z.B. Das Hotel sucht exklusive Willkommensgeschenke für VIP-Gäste und Firmenveranstaltungen. Die bisherige interne Lösung war zeitaufwändig und nicht skalierbar..." oninput="checkValid();countChars(this,'f-kontext-count',600)"></textarea>
+            <div class="char-hint"><span id="f-kontext-count">0</span>/600 Zeichen</div>
+          </div>
+          <div class="field">
+            <label>Budget-Rahmen (optional)</label>
+            <input id="f-budget" type="text" placeholder="z.B. €50–150 pro Box, ca. 30 Stück/Monat">
+          </div>
+        </div>
+      </div>
+
+      <div id="f-err" class="err-msg"></div>
+      <button class="gen-btn" id="gen-btn" disabled onclick="generate()">
+        <span>✦</span>
+        <span id="gen-label">Kostenloses Angebot generieren</span>
+      </button>
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="form-sidebar">
+      <div class="sidebar-card">
+        <div class="sidebar-card-title">So wird's gut</div>
+        <div class="tip-list">
+          <div class="tip-item">
+            <div class="tip-num">1</div>
+            <div class="tip-text"><strong>Konkret beim Kontext</strong> — Je mehr Details zur Situation des Kunden, desto treffsicherer das Angebot.</div>
+          </div>
+          <div class="tip-item">
+            <div class="tip-num">2</div>
+            <div class="tip-text"><strong>Budget angeben</strong> — Hilft der KI, die Investition realistisch zu rahmen.</div>
+          </div>
+          <div class="tip-item">
+            <div class="tip-num">3</div>
+            <div class="tip-text"><strong>Ansprechpartner</strong> — Mit Name wird die Anrede persönlich und professionell.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-card-title">Dein Angebot enthält</div>
+        <div class="preview-section">
+          <div class="preview-item"><span class="preview-item-icon">→</span><span class="preview-item-text">Ausgangslage (2–3 Sätze)</span></div>
+          <div class="preview-item"><span class="preview-item-icon">→</span><span class="preview-item-text">Dein Ansatz & Lösung</span></div>
+          <div class="preview-item"><span class="preview-item-icon">→</span><span class="preview-item-text">5 konkrete Leistungen</span></div>
+          <div class="preview-item"><span class="preview-item-icon">→</span><span class="preview-item-text">Investitionsrahmen</span></div>
+          <div class="preview-item"><span class="preview-item-icon">→</span><span class="preview-item-text">Nächste Schritte</span></div>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-card-title">Kostenloses Kontingent</div>
+        <div class="counter-badge">
+          <div>
+            <div class="counter-num" id="free-counter">1</div>
+          </div>
+          <div class="counter-text">
+            <strong id="free-counter-label">Gratis-Angebot verfügbar</strong>
+            Danach ab €7/Angebot
+          </div>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     VIEW: LOADING
+══════════════════════════════════════ -->
+<div id="view-loading" class="view">
+  <div class="ld-orb">
+    <div class="ld-orb-inner">✦</div>
+  </div>
+  <div class="ld-title">Angebot wird erstellt…</div>
+  <div class="ld-steps">
+    <div class="ld-step active" id="ld-s1">
+      <div class="ld-step-icon">🔍</div>
+      <div class="ld-step-text">Kontext analysieren &amp; Kunde verstehen</div>
+    </div>
+    <div class="ld-step" id="ld-s2">
+      <div class="ld-step-icon">✍️</div>
+      <div class="ld-step-text">Argumentation formulieren</div>
+    </div>
+    <div class="ld-step" id="ld-s3">
+      <div class="ld-step-icon">✨</div>
+      <div class="ld-step-text">Sprache &amp; Ton optimieren</div>
+    </div>
+    <div class="ld-step" id="ld-s4">
+      <div class="ld-step-icon">📄</div>
+      <div class="ld-step-text" id="ld-s4-text">Angebot finalisieren</div>
+    </div>
+  </div>
+  <div class="ld-dots"><span></span><span></span><span></span></div>
+</div>
+
+<!-- ══════════════════════════════════════
+     VIEW: RESULT
+══════════════════════════════════════ -->
+<div id="view-result" class="view">
+  <div class="result-layout">
+
+    <!-- Topbar -->
+    <div class="res-topbar">
+      <div class="res-title">
+        <span class="res-title-accent">✦</span> Angebot bereit
+      </div>
+      <div class="btn-row">
+        <button class="btn-g" id="copy-btn" onclick="copyProposal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          Kopieren
+        </button>
+        <button class="btn-g" onclick="window.print()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          PDF drucken
+        </button>
+        <button class="btn-p" onclick="startNew()">+ Neues Angebot</button>
+      </div>
+    </div>
+
+    <!-- Document -->
+    <div>
+      <div class="proposal-doc" id="proposal-doc">
+        <div class="doc-header">
+          <div class="doc-party">
+            <strong id="r-von-firma"></strong>
+            <span id="r-von-label">Ihr Ansprechpartner</span>
+            <div class="doc-date" id="r-date"></div>
+          </div>
+          <div class="doc-party right">
+            <strong id="r-an-firma"></strong>
+            <span id="r-an-name"></span>
+          </div>
+        </div>
+        <div class="doc-betreff" id="r-betreff"></div>
+        <div class="doc-anrede" id="r-anrede"></div>
+        <div class="doc-section">
+          <div class="doc-section-title" id="r-lbl-ausg">Ausgangslage</div>
+          <p id="r-ausgangslage"></p>
+        </div>
+        <div class="doc-section">
+          <div class="doc-section-title" id="r-lbl-ansatz">Unser Ansatz</div>
+          <p id="r-loesung"></p>
+        </div>
+        <div class="doc-section">
+          <div class="doc-section-title" id="r-lbl-scope">Leistungsumfang</div>
+          <ul class="doc-list" id="r-scope"></ul>
+        </div>
+        <div class="doc-section">
+          <div class="doc-section-title" id="r-lbl-invest">Investition</div>
+          <p id="r-investition"></p>
+        </div>
+        <div class="doc-section">
+          <div class="doc-section-title" id="r-lbl-next">Nächste Schritte</div>
+          <p id="r-naechste"></p>
+        </div>
+        <div class="doc-closing">
+          <span id="r-gruss"></span><br>
+          <strong id="r-signatur"></strong>
+        </div>
+        <div class="doc-watermark">
+          Erstellt mit <strong>Angebot·AI</strong> · KI-gestützte B2B-Angebotserstellung für den DACH-Markt
+        </div>
+      </div>
+    </div>
+
+    <!-- Result Sidebar -->
+    <aside class="res-sidebar">
+      <div class="res-side-card">
+        <div class="res-side-title">Angebot-Qualität</div>
+        <div class="score-grid">
+          <div class="score-item"><div class="score-num">A+</div><div class="score-lbl">Ton</div></div>
+          <div class="score-item"><div class="score-num">5/5</div><div class="score-lbl">Struktur</div></div>
+          <div class="score-item"><div class="score-num">100%</div><div class="score-lbl">Individuell</div></div>
+          <div class="score-item"><div class="score-num" id="r-wordcount">—</div><div class="score-lbl">Wörter</div></div>
+        </div>
+      </div>
+
+      <div class="res-side-card">
+        <div class="res-side-title">Verwendung</div>
+        <div class="usage-bar-wrap">
+          <div class="usage-bar-label">
+            <span>Gratis-Kontingent</span>
+            <strong id="usage-text">1/1 verwendet</strong>
+          </div>
+          <div class="usage-bar-track">
+            <div class="usage-bar-fill" id="usage-bar" style="width:100%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="upgrade-card">
+        <div class="upgrade-icon">✦</div>
+        <div class="upgrade-title">Weitere Angebote</div>
+        <div class="upgrade-desc">Dein Gratis-Kontingent ist aufgebraucht. Wähle ein Paket für weitere Angebote.</div>
+        <div class="plan-rows" style="margin-bottom:14px">
+          <div class="plan-row" onclick="openPaywall()">
+            <div><div class="plan-row-name">Pay-per-Use</div><div class="plan-row-desc">1 Angebot</div></div>
+            <div class="plan-row-price">€7</div>
+          </div>
+          <div class="plan-row" onclick="openPaywall()">
+            <div><div class="plan-row-name">Pro Monat</div><div class="plan-row-desc">Unbegrenzt</div></div>
+            <div class="plan-row-price">€49<small>/mo</small></div>
+          </div>
+          <div class="plan-row" onclick="openPaywall()">
+            <div><div class="plan-row-name">Teams</div><div class="plan-row-desc">White-Label + API</div></div>
+            <div class="plan-row-price">€149<small>/mo</small></div>
+          </div>
+        </div>
+        <button class="upgrade-btn" onclick="openPaywall()">Jetzt upgraden →</button>
+      </div>
+
+      <div class="res-side-card">
+        <div class="res-side-title">Nächste Schritte</div>
+        <div class="next-steps-list">
+          <div class="next-step-item"><div class="next-step-num">1</div><div>PDF drucken oder als Anhang per E-Mail versenden</div></div>
+          <div class="next-step-item"><div class="next-step-num">2</div><div>Text in dein E-Mail-Tool kopieren &amp; ggf. anpassen</div></div>
+          <div class="next-step-item"><div class="next-step-num">3</div><div>Follow-up nach 3 Werktagen planen</div></div>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     PAYWALL MODAL
+══════════════════════════════════════ -->
+<div class="modal-overlay" id="paywall-modal">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closePaywall()">✕</button>
+    <span class="modal-icon">✦</span>
+    <div class="modal-title" id="pw-title">Mehr Angebote</div>
+    <p class="modal-sub" id="pw-sub">Wähle ein Paket und generiere unbegrenzt professionelle Angebote — in Deutsch und Englisch, für jeden Kunden und jede Branche.</p>
+    <div class="plan-cards">
+      <div class="plan-card">
+        <div class="plan-card-name">Pay-per-Use</div>
+        <div class="plan-card-desc">Perfekt für gelegentliche Angebote ohne Abo-Bindung</div>
+        <div class="plan-card-price">€7</div>
+      </div>
+      <div class="plan-card popular">
+        <div class="plan-card-name">Pro Monat</div>
+        <div class="plan-card-desc">Unlimitierte Angebote, DE+EN, alle Updates inklusive</div>
+        <div class="plan-card-price">€49<small>/mo</small></div>
+      </div>
+    </div>
+    <div class="plan-card-full">
+      <div>
+        <div class="plan-card-name">Teams &amp; White-Label</div>
+        <div class="plan-card-desc">Eigenes Branding, mehrere Nutzer, API-Zugang, Priority Support</div>
+      </div>
+      <div class="plan-card-price">€149<small>/mo</small></div>
+    </div>
+    <button class="modal-cta" id="pw-cta">Jetzt freischalten →</button>
+    <button class="modal-dismiss" onclick="closePaywall()" id="pw-dismiss">Schließen</button>
+    <div class="modal-secure">🔒 Sichere Zahlung via Stripe · jederzeit kündbar</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════ -->
+<script>
+/* ── State ── */
+let lang = 'de';
+let anrede = 'Sie';
+let freeUsed = parseInt(localStorage.getItem('angebotai_free') || '0');
+let proposal = null;
+
+/* ── Views ── */
+function showView(name) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  window.scrollTo(0, 0);
+
+  // Update nav
+  const isHome = name === 'home';
+  const isResult = name === 'result';
+  document.getElementById('nav-start-btn').style.display = isHome ? '' : 'none';
+  document.getElementById('nav-home-btn').style.display = isHome ? 'none' : '';
+  document.getElementById('nav-new-btn').style.display = isResult ? '' : 'none';
+}
+
+/* ── Language & Anrede ── */
+function setLang(l) {
+  lang = l;
+  document.getElementById('tog-de').classList.toggle('on', l === 'de');
+  document.getElementById('tog-en').classList.toggle('on', l === 'en');
+  updateLabels();
+}
+
+function setAnrede(a) {
+  anrede = a;
+  document.getElementById('tog-sie').classList.toggle('on', a === 'Sie');
+  document.getElementById('tog-du').classList.toggle('on', a === 'Du');
+}
+
+function updateLabels() {
+  const de = lang === 'de';
+  document.getElementById('gen-label').textContent =
+    freeUsed < 1
+      ? (de ? 'Kostenloses Angebot generieren' : 'Generate free proposal')
+      : (de ? 'Weiteres Angebot generieren (kostenpflichtig)' : 'Generate proposal (paid)');
+  if (freeUsed < 1) {
+    document.getElementById('free-badge-sm').textContent = de ? '✦ 1 kostenloses Angebot verfügbar' : '✦ 1 free proposal available';
+  } else {
+    document.getElementById('free-badge-sm').textContent = de ? '✦ Gratis-Kontingent aufgebraucht' : '✦ Free limit reached';
+    document.getElementById('free-badge-sm').style.color = 'var(--muted4)';
+  }
+}
+
+/* ── Form Validation ── */
+function checkValid() {
+  const ok = val('f-firma') && val('f-leistung') && val('f-kfirma') && val('f-kontext');
+  document.getElementById('gen-btn').disabled = !ok;
+}
+
+function val(id) { return document.getElementById(id).value.trim(); }
+
+function countChars(el, countId, max) {
+  const n = el.value.length;
+  document.getElementById(countId).textContent = n;
+  el.style.borderColor = n > max ? 'var(--red)' : '';
+}
+
+/* ── Loading animation ── */
+let ldTimer;
+function startLoadingAnimation(client) {
+  const steps = ['ld-s1', 'ld-s2', 'ld-s3', 'ld-s4'];
+  document.getElementById('ld-s4-text').textContent =
+    lang === 'de' ? `Optimiert für ${client}` : `Optimized for ${client}`;
+  steps.forEach(s => {
+    document.getElementById(s).classList.remove('active', 'done');
+  });
+  document.getElementById('ld-s1').classList.add('active');
+  let i = 0;
+  ldTimer = setInterval(() => {
+    if (i < steps.length) {
+      document.getElementById(steps[i]).classList.remove('active');
+      document.getElementById(steps[i]).classList.add('done');
+      document.getElementById(steps[i]).querySelector('.ld-step-icon').textContent = '✓';
+      i++;
+      if (i < steps.length) {
+        document.getElementById(steps[i]).classList.add('active');
+      }
+    }
+  }, 900);
+}
+
+/* ── Generate ── */
+async function generate() {
+  if (freeUsed >= 1) { openPaywall(); return; }
+
+  const firma = val('f-firma');
+  const leistung = val('f-leistung');
+  const kname = val('f-kname');
+  const kfirma = val('f-kfirma');
+  const kontext = val('f-kontext');
+  const budget = val('f-budget');
+
+  document.getElementById('f-err').classList.remove('show');
+  showView('loading');
+  startLoadingAnimation(kfirma);
+
+  const de = lang === 'de';
+  const systemPrompt = `You are an elite ${de ? 'German-language' : 'English-language'} B2B proposal writer. Sophisticated, precise, premium tone. DACH market expertise.
+
+Return ONLY valid JSON — no markdown fences, no explanation, no backticks:
+{
+  "betreff": "sharp subject line, max 10 words, ${de ? 'in German' : 'in English'}",
+  "anrede": "${de ? (anrede === 'Sie' ? 'Sehr geehrte(r) Herr/Frau [Name aus Context]' : 'Hallo [Vorname aus Context]') : 'Dear [Name from Context]'}",
+  "ausgangslage": "2-3 sentences about client situation and challenge, showing deep understanding. ${de ? 'In German.' : 'In English.'}",
+  "loesung": "2-3 sentences: tailored, confident approach. Not generic. ${de ? 'In German.' : 'In English.'}",
+  "leistungsumfang": ["5 specific, concrete, measurable deliverables ${de ? 'in German' : 'in English'}"],
+  "investition": "${de ? 'Premium investment framing in German, value-focused, not just price.' : 'Premium investment framing in English, value-focused.'}${budget ? ' Budget context: ' + budget : ''}",
+  "naechste_schritte": "${de ? 'Konkrete nächste Schritte mit implied timeline, max 2-3 Sätze.' : 'Concrete next steps with implied timeline, max 2-3 sentences.'}",
+  "grussformel": "${de ? 'Mit freundlichen Grüßen' : 'Best regards'}"
+}
+
+Context: Provider="${firma}", Service/Product="${leistung}", Client Contact="${kname || (de ? 'Entscheider' : 'the decision-maker')}", Client Company="${kfirma}", Situation="${kontext}"`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1200,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: 'Generate the proposal JSON now.' }]
+      })
+    });
+
+    if (!res.ok) throw new Error('API error: ' + res.status);
+    const data = await res.json();
+    if (data.error) throw new Error(data.error.message);
+
+    const raw = data.content?.[0]?.text || '';
+    const clean = raw.replace(/```json\s*|\s*```/g, '').trim();
+    proposal = JSON.parse(clean);
+
+    clearInterval(ldTimer);
+    freeUsed++;
+    localStorage.setItem('angebotai_free', freeUsed);
+
+    renderResult(firma, kname, kfirma);
+    updateLabels();
+    showView('result');
+
+  } catch (err) {
+    clearInterval(ldTimer);
+    showView('form');
+    const errEl = document.getElementById('f-err');
+    errEl.textContent = de
+      ? 'Generierung fehlgeschlagen. Bitte erneut versuchen. (' + (err.message || 'Unbekannter Fehler') + ')'
+      : 'Generation failed. Please try again. (' + (err.message || 'Unknown error') + ')';
+    errEl.classList.add('show');
+  }
+}
+
+/* ── Render Result ── */
+function renderResult(firma, kname, kfirma) {
+  const de = lang === 'de';
+  const now = new Date();
+  const dateStr = now.toLocaleDateString(de ? 'de-AT' : 'en-GB', {
+    year: 'numeric', month: 'long', day: 'numeric'
+  });
+
+  document.getElementById('r-von-firma').textContent = firma;
+  document.getElementById('r-von-label').textContent = de ? 'Ihr Ansprechpartner' : 'Your contact';
+  document.getElementById('r-date').textContent = dateStr;
+  document.getElementById('r-an-firma').textContent = kfirma;
+  document.getElementById('r-an-name').textContent = kname || '';
+  document.getElementById('r-betreff').textContent = proposal.betreff;
+  document.getElementById('r-anrede').textContent = proposal.anrede;
+
+  const labels = {
+    ausg: de ? 'Ausgangslage' : 'Situation',
+    ansatz: de ? 'Unser Ansatz' : 'Our Approach',
+    scope: de ? 'Leistungsumfang' : 'Scope of Work',
+    invest: de ? 'Investition' : 'Investment',
+    next: de ? 'Nächste Schritte' : 'Next Steps',
+  };
+  Object.entries(labels).forEach(([k, v]) => {
+    const el = document.getElementById('r-lbl-' + k.replace('ansatz','ansatz').replace('ausg','ausg'));
+    if (el) el.textContent = v;
+  });
+  document.getElementById('r-lbl-ausg').textContent = labels.ausg;
+  document.getElementById('r-lbl-ansatz').textContent = labels.ansatz;
+  document.getElementById('r-lbl-scope').textContent = labels.scope;
+  document.getElementById('r-lbl-invest').textContent = labels.invest;
+  document.getElementById('r-lbl-next').textContent = labels.next;
+
+  document.getElementById('r-ausgangslage').textContent = proposal.ausgangslage;
+  document.getElementById('r-loesung').textContent = proposal.loesung;
+
+  const ul = document.getElementById('r-scope');
+  ul.innerHTML = '';
+  (proposal.leistungsumfang || []).forEach(item => {
+    const li = document.createElement('li');
+    li.textContent = item;
+    ul.appendChild(li);
+  });
+
+  document.getElementById('r-investition').textContent = proposal.investition;
+  document.getElementById('r-naechste').textContent = proposal.naechste_schritte;
+  document.getElementById('r-gruss').textContent = proposal.grussformel;
+  document.getElementById('r-signatur').textContent = firma;
+
+  // Word count
+  const allText = [
+    proposal.betreff, proposal.ausgangslage, proposal.loesung,
+    ...(proposal.leistungsumfang || []), proposal.investition, proposal.naechste_schritte
+  ].join(' ');
+  const wc = allText.split(/\s+/).filter(Boolean).length;
+  document.getElementById('r-wordcount').textContent = wc;
+}
+
+/* ── Copy ── */
+function copyProposal() {
+  if (!proposal) return;
+  const de = lang === 'de';
+  const lines = [
+    proposal.betreff, '',
+    proposal.anrede, '',
+    (de ? 'Ausgangslage:' : 'Situation:'), proposal.ausgangslage, '',
+    (de ? 'Unser Ansatz:' : 'Our Approach:'), proposal.loesung, '',
+    (de ? 'Leistungsumfang:' : 'Scope of Work:'),
+    ...(proposal.leistungsumfang || []).map(l => `• ${l}`), '',
+    (de ? 'Investition:' : 'Investment:'), proposal.investition, '',
+    (de ? 'Nächste Schritte:' : 'Next Steps:'), proposal.naechste_schritte, '',
+    proposal.grussformel, val('f-firma')
+  ];
+  navigator.clipboard.writeText(lines.join('\n')).then(() => {
+    const btn = document.getElementById('copy-btn');
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><polyline points="20 6 9 17 4 12"/></svg> Kopiert!`;
+    btn.style.borderColor = 'var(--green)';
+    btn.style.color = 'var(--green)';
+    setTimeout(() => {
+      btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Kopieren`;
+      btn.style.borderColor = '';
+      btn.style.color = '';
+    }, 2500);
+  });
+}
+
+/* ── Start New ── */
+function startNew() {
+  proposal = null;
+  showView('form');
+  document.getElementById('f-err').classList.remove('show');
+}
+
+/* ── Paywall ── */
+function openPaywall() {
+  document.getElementById('paywall-modal').classList.add('show');
+}
+function closePaywall() {
+  document.getElementById('paywall-modal').classList.remove('show');
+}
+document.getElementById('paywall-modal').addEventListener('click', function(e) {
+  if (e.target === this) closePaywall();
+});
+
+/* ── Init ── */
+updateLabels();
+
+/* ── PWA Service Worker ── */
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+
+/* ── Keyboard shortcuts ── */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closePaywall();
+});
+</script>
+</body>
+</html>
